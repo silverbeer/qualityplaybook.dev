@@ -1,12 +1,14 @@
-.PHONY: help dev build deploy clean test
+.PHONY: help dev build deploy clean test k3s-deploy k3s-redeploy
 
 help:
 	@echo "Quality Playbook - Available Commands:"
-	@echo "  make dev        - Start local development environment"
-	@echo "  make build      - Build Docker images"
-	@echo "  make deploy     - Deploy to GKE (requires kubectl/helm)"
-	@echo "  make clean      - Clean up containers and volumes"
-	@echo "  make test       - Run tests"
+	@echo "  make dev           - Start local development environment"
+	@echo "  make build         - Build Docker images"
+	@echo "  make deploy        - Deploy to GKE (requires kubectl/helm)"
+	@echo "  make k3s-deploy    - Deploy to local k3s cluster"
+	@echo "  make k3s-redeploy  - Quick redeploy to k3s (backend|frontend|all)"
+	@echo "  make clean         - Clean up containers and volumes"
+	@echo "  make test          - Run tests"
 
 dev:
 	docker-compose up
@@ -48,3 +50,14 @@ install-frontend:
 	cd frontend && npm install
 
 install: install-backend install-frontend
+
+k3s-deploy:
+	@echo "Deploying to local k3s cluster..."
+	./scripts/k3s-deploy.sh
+
+k3s-redeploy:
+	@echo "Quick redeploy to k3s..."
+	./scripts/k3s-redeploy.sh $(filter-out $@,$(MAKECMDGOALS))
+
+%:
+	@:
