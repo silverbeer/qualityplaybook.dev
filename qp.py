@@ -109,6 +109,16 @@ def start(
             console.print("[yellow]⚠️  Frontend is already running on port 5173[/yellow]")
             return
 
+        # Check if node_modules exists
+        if not (FRONTEND_DIR / "node_modules").exists():
+            console.print("[yellow]⚠️  node_modules not found, installing dependencies...[/yellow]")
+            with console.status("[bold green]Installing npm dependencies..."):
+                result = run_command("npm install", cwd=FRONTEND_DIR, capture=True)
+                if result.returncode != 0:
+                    console.print(f"[red]❌ Failed to install dependencies:[/red]\n{result.stderr}")
+                    return
+            console.print("[green]✓[/green] Dependencies installed")
+
         console.print("\n[bold cyan]🎨 Starting Frontend (Vue)...[/bold cyan]")
         console.print("[dim]Run 'qp tail frontend' in another terminal to see logs[/dim]\n")
 
@@ -126,6 +136,16 @@ def start(
 
     elif mode == "all":
         console.print("\n[bold cyan]🚀 Starting All Services...[/bold cyan]\n")
+
+        # Check frontend dependencies
+        if not (FRONTEND_DIR / "node_modules").exists():
+            console.print("[yellow]⚠️  Installing frontend dependencies first...[/yellow]")
+            with console.status("[bold green]Installing npm dependencies..."):
+                result = run_command("npm install", cwd=FRONTEND_DIR, capture=True)
+                if result.returncode != 0:
+                    console.print(f"[red]❌ Failed to install dependencies:[/red]\n{result.stderr}")
+                    return
+            console.print("[green]✓[/green] Dependencies installed\n")
 
         # Start backend
         if not is_running("backend"):
