@@ -2,7 +2,26 @@
 
 Get your Quality Playbook blog running in 5 minutes!
 
-## 🚀 Option 1: Docker Compose (Easiest)
+## 🚀 Option 1: CLI Tool (Easiest & Coolest! 🎯)
+
+```bash
+# Install dependencies
+cd backend && uv sync && cd ..
+
+# Start everything
+./qp start --mode all
+
+# Check status with a beautiful table
+./qp status
+
+# Visit http://localhost:5173
+```
+
+**Hot reload enabled!** Edit code and see changes instantly.
+
+That's it! 🎉
+
+## 🐳 Option 2: Docker Compose
 
 ```bash
 # Clone and start
@@ -12,9 +31,7 @@ docker-compose up
 # Visit http://localhost:5173
 ```
 
-That's it! 🎉
-
-## 🛠️ Option 2: Local Development
+## 🛠️ Option 3: Manual Local Development
 
 ### 1. Run Setup Script
 

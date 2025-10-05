@@ -77,7 +77,41 @@ qualityplaybook.dev/
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### Option 1: Docker Compose (Recommended)
+### Option 1: CLI Tool (Easiest! 🎯)
+
+We have a beautiful CLI built with Typer and Rich:
+
+```bash
+# Install CLI dependencies
+cd backend && uv sync && cd ..
+
+# Start everything with hot reload
+./qp start --mode all
+
+# Check status (beautiful table!)
+./qp status
+
+# View logs
+./qp tail backend   # or frontend, or docker
+
+# Stop services
+./qp stop
+
+# Restart
+./qp restart
+```
+
+**Create an alias for easy access:**
+```bash
+alias qp="$(pwd)/qp"
+
+# Now just use:
+qp start --mode all
+qp status
+qp tail backend
+```
+
+### Option 2: Docker Compose
 
 ```bash
 # Start all services
@@ -88,7 +122,7 @@ docker-compose up
 # API Docs: http://localhost:8000/docs
 ```
 
-### Option 2: Manual Setup
+### Option 3: Manual Setup
 
 **Backend:**
 ```bash
