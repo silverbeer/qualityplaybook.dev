@@ -14,7 +14,7 @@ dev:
 	docker-compose up
 
 dev-backend:
-	cd backend && uvicorn app.main:app --reload --port 8000
+	cd backend && uv run uvicorn app.main:app --reload --port 8000
 
 dev-frontend:
 	cd frontend && npm run dev
@@ -44,7 +44,7 @@ test:
 	cd frontend && npm run test
 
 install-backend:
-	cd backend && pip install -r requirements.txt
+	cd backend && uv sync
 
 install-frontend:
 	cd frontend && npm install

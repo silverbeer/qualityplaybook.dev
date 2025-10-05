@@ -68,8 +68,14 @@ qualityplaybook.dev/
 
 ### Prerequisites
 - Python 3.11+
+- [uv](https://github.com/astral-sh/uv) - Fast Python package installer
 - Node.js 20+
 - Docker & Docker Compose (optional)
+
+**Install uv:**
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
 ### Option 1: Docker Compose (Recommended)
 
@@ -87,10 +93,8 @@ docker-compose up
 **Backend:**
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+uv sync
+uv run uvicorn app.main:app --reload --port 8000
 ```
 
 **Frontend:**

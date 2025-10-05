@@ -28,8 +28,7 @@ chmod +x scripts/setup-local.sh
 **Terminal 1 - Backend:**
 ```bash
 cd backend
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload
 ```
 
 **Terminal 2 - Frontend:**
@@ -103,7 +102,7 @@ Quick version:
 **Backend won't start:**
 ```bash
 cd backend
-pip install -r requirements.txt
+uv sync
 ```
 
 **Frontend won't start:**

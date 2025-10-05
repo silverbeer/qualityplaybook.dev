@@ -169,7 +169,7 @@ Ideas based on your work:
 - [ ] Check site performance
 
 ### Monthly
-- [ ] Update dependencies (`npm update`, `pip list --outdated`)
+- [ ] Update dependencies (`npm update`, `uv lock --upgrade`)
 - [ ] Review GCS media usage
 - [ ] Backup content (git handles this!)
 
