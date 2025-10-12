@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: gcr.io/YOUR_PROJECT_ID/qualityplaybook-backend
+  repository: gcr.io/missing-table/qualityplaybook-backend
   tag: latest
   pullPolicy: Always
 
