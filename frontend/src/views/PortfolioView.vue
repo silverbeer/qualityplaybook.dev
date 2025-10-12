@@ -3,12 +3,12 @@
     <h1 class="text-4xl font-bold text-gray-900 mb-8">Portfolio</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- missingtable.com -->
+      <!-- dev.missingtable.com -->
       <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
         <div class="p-6">
           <h2 class="text-2xl font-bold text-gray-900 mb-3">
-            <a href="https://missingtable.com" target="_blank" class="hover:text-primary-600 transition">
-              missingtable.com ↗
+            <a href="https://dev.missingtable.com" target="_blank" class="hover:text-primary-600 transition">
+              dev.missingtable.com ↗
             </a>
           </h2>
           <div class="flex flex-wrap gap-2 mb-4">
@@ -29,7 +29,7 @@
             <li>Interactive dashboards and reporting</li>
           </ul>
           <a
-            href="https://missingtable.com"
+            href="https://dev.missingtable.com"
             target="_blank"
             class="text-primary-600 hover:text-primary-700 font-semibold"
           >
