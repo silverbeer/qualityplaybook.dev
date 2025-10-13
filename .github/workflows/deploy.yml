@@ -56,7 +56,12 @@ jobs:
     - name: Sync media to GCS
       if: github.ref == 'refs/heads/main'
       run: |
-        gsutil -m rsync -r -d ./frontend/public/media gs://${{ env.GCS_BUCKET }}/media
+        if [ -d "./frontend/public/media" ]; then
+          gsutil -m rsync -r -d ./frontend/public/media gs://${{ env.GCS_BUCKET }}/media
+          echo "✅ Media synced to GCS"
+        else
+          echo "⏭️  No media directory found, skipping sync"
+        fi
 
     - name: Get GKE credentials
       if: github.ref == 'refs/heads/main'
