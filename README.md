@@ -290,7 +290,7 @@ MIT License - See LICENSE file for details
 - **Live Site**: https://qualityplaybook.dev
 - **Portfolio**: https://qualityplaybook.dev/portfolio
 - **Related Projects**:
-  - [missingtable.com](https://missingtable.com)
+  - [dev.missingtable.com](https://dev.missingtable.com)
   - match-scraper
 
 ---
