@@ -32,6 +32,10 @@ jobs:
       with:
         project_id: ${{ env.GCP_PROJECT_ID }}
 
+    - name: Install GKE auth plugin
+      run: |
+        gcloud components install gke-gcloud-auth-plugin
+
     - name: Configure Docker for GCR
       run: |
         gcloud auth configure-docker
