@@ -19,8 +19,8 @@
         <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">My Projects</h2>
         <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
           <li>
-            <a href="https://missingtable.com" target="_blank" class="text-primary-600 hover:text-primary-700 font-semibold">
-              missingtable.com
+            <a href="https://dev.missingtable.com" target="_blank" class="text-primary-600 hover:text-primary-700 font-semibold">
+              dev.missingtable.com
             </a> - A data quality and validation platform
           </li>
           <li>
