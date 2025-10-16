@@ -110,4 +110,4 @@ And long live modern Python. ✨
 
 ---
 
-*If you’ve tried uv or switched your projects to `pyproject.toml`, I’d love to hear how it went — drop a comment or tag me on [LinkedIn](https://www.linkedin.com/in/tomdrakecloud).*
+*If you've tried uv or switched your projects to `pyproject.toml`, I'd love to hear how it went — drop a comment or tag me on [LinkedIn](https://www.linkedin.com/in/tomdrake-qe).*
