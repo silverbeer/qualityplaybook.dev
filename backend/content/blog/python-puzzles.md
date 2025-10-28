@@ -1,6 +1,6 @@
 ---
 title: "Python Puzzles in the Age of AI: Do We Still Need to Solve Them?"
-date: 2025-01-28
+date: 2025-10-28
 tags: [Python, AI, Career, Testing, Interviews]
 excerpt: "Ten years of Python experience, two years of AI coding assistants, and one humbling coding interview. Are we testing the right skills anymore?"
 author: Quality Playbook
