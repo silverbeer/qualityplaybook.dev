@@ -180,6 +180,11 @@ git add pyproject.toml uv.lock
 3. Test locally with Docker Compose or k3s
 4. Commit and push
 
+## Author & Contact
+
+- **Author:** Tom Drake
+- **LinkedIn:** [www.linkedin.com/in/tomdrake-qe](https://www.linkedin.com/in/tomdrake-qe)
+
 ## References
 
 - [uv Documentation](https://github.com/astral-sh/uv)
