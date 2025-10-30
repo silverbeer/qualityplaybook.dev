@@ -73,7 +73,7 @@
             <div class="text-primary-600 dark:text-primary-400 text-4xl mb-4">📊</div>
             <h3 class="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Real Projects</h3>
             <p class="text-gray-700 dark:text-gray-300">
-              Case studies and experiences from building products like dev.missingtable.com and match-scraper.
+              Case studies and experiences from building products like missingtable.com and match-scraper.
             </p>
           </div>
         </div>
