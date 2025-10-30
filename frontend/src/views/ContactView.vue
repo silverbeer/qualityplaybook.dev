@@ -33,7 +33,7 @@
           <div class="p-4 bg-gray-50 rounded-lg">
             <h2 class="text-xl font-bold text-gray-900 mb-3">Connect With Me</h2>
             <p class="text-gray-700 mb-4">
-              Check out my work at <a href="https://dev.missingtable.com" target="_blank" class="text-primary-600 hover:text-primary-700 font-semibold">dev.missingtable.com</a>
+              Check out my work at <a href="https://missingtable.com" target="_blank" class="text-primary-600 hover:text-primary-700 font-semibold">missingtable.com</a>
             </p>
             <p class="text-gray-600 text-sm italic">
               Note: Contact form functionality coming soon. For now, please connect via the projects listed in my portfolio.
