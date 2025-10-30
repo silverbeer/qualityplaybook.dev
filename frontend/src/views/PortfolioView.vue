@@ -3,12 +3,12 @@
     <h1 class="text-4xl font-bold text-gray-900 mb-8">Portfolio</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- dev.missingtable.com -->
+      <!-- missingtable.com -->
       <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
         <div class="p-6">
           <h2 class="text-2xl font-bold text-gray-900 mb-3">
-            <a href="https://dev.missingtable.com" target="_blank" class="hover:text-primary-600 transition">
-              dev.missingtable.com ↗
+            <a href="https://missingtable.com" target="_blank" class="hover:text-primary-600 transition">
+              missingtable.com ↗
             </a>
           </h2>
           <div class="flex flex-wrap gap-2 mb-4">
@@ -18,23 +18,39 @@
             <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">GKE</span>
           </div>
           <p class="text-gray-700 mb-4">
-            A comprehensive data quality and validation platform designed to help teams identify and track
-            missing data patterns. Features automated data profiling, anomaly detection, and quality metrics.
+            A passion project tracking the highest-level youth soccer league in the US, inspired by my son's journey in the sport.
+            Built as a learning platform to explore modern development practices including Gen AI, infrastructure as code, and quality
+            engineering - while hopefully inspiring the next generation to build and create.
           </p>
           <h3 class="font-bold text-gray-900 mb-2">Key Features:</h3>
           <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
-            <li>Real-time data quality monitoring</li>
-            <li>Automated anomaly detection</li>
-            <li>Custom validation rules</li>
-            <li>Interactive dashboards and reporting</li>
+            <li>Live match results and schedules for youth soccer leagues</li>
+            <li>Community-driven: Team managers can invite fans to follow teams</li>
+            <li>Parent and player insights including standings and statistics</li>
+            <li>Track league matches, friendlies, and tournaments</li>
+            <li>Expandable architecture to support multiple leagues and clubs</li>
+            <li>Open source to inspire young players to learn coding</li>
           </ul>
-          <a
-            href="https://dev.missingtable.com"
-            target="_blank"
-            class="text-primary-600 hover:text-primary-700 font-semibold"
-          >
-            Visit Project →
-          </a>
+          <div class="flex gap-4 mb-3">
+            <a
+              href="https://missingtable.com"
+              target="_blank"
+              class="text-primary-600 hover:text-primary-700 font-semibold"
+            >
+              Visit Project →
+            </a>
+            <a
+              href="https://github.com/silverbeer/missing-table"
+              target="_blank"
+              class="text-primary-600 hover:text-primary-700 font-semibold"
+            >
+              GitHub →
+            </a>
+          </div>
+          <p class="text-gray-600 text-sm italic">
+            Actively being developed. Interested in learning more or contributing?
+            Contact me at <a href="mailto:silverbeer.io@gmail.com" class="text-primary-600 hover:text-primary-700">silverbeer.io@gmail.com</a>
+          </p>
         </div>
       </div>
 
@@ -49,17 +65,31 @@
             <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">Docker</span>
           </div>
           <p class="text-gray-700 mb-4">
-            An automated sports data collection and analysis tool that scrapes, processes, and analyzes
-            match data from multiple sources. Built with reliability and data quality in mind.
+            The data collector that powers missingtable.com—and my excuse to geek out on distributed systems.
+            Uses Playwright to scrape match data, RabbitMQ and Celery to orchestrate everything, all running on a
+            K3S cluster in my house. Learning message queues has never been this fun!
           </p>
           <h3 class="font-bold text-gray-900 mb-2">Key Features:</h3>
           <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
-            <li>Distributed web scraping architecture</li>
-            <li>Automated data validation and cleaning</li>
-            <li>Historical data tracking and trends</li>
-            <li>RESTful API for data access</li>
+            <li>Scrapes match schedules and results automatically</li>
+            <li>Distributed task processing (because overkill is underrated)</li>
+            <li>Built-in data validation to catch mistakes</li>
+            <li>Historical data for tracking team performance</li>
+            <li>Deployed on home K3S—real infrastructure, real learning</li>
           </ul>
-          <p class="text-gray-600 italic">Currently in active development</p>
+          <div class="mb-4">
+            <a
+              href="https://github.com/silverbeer/match-scraper"
+              target="_blank"
+              class="text-primary-600 hover:text-primary-700 font-semibold"
+            >
+              View on GitHub →
+            </a>
+          </div>
+          <p class="text-gray-600 text-sm italic">
+            Actively being developed. Interested in learning more or contributing?
+            Contact me at <a href="mailto:silverbeer.io@gmail.com" class="text-primary-600 hover:text-primary-700">silverbeer.io@gmail.com</a>
+          </p>
         </div>
       </div>
 
@@ -74,16 +104,32 @@
             <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">Tailwind</span>
           </div>
           <p class="text-gray-700 mb-4">
-            This very site! A GitOps-based blog platform where I share quality engineering insights.
-            Features markdown-based content management with automated deployments to Kubernetes.
+            This very site! A quality engineering blog built with quality engineering practices (practicing what I preach over here).
+            Write posts in Markdown, commit to GitHub, auto-deploy to Kubernetes—pure GitOps bliss. Built as a learning project to
+            explore modern web architecture, DevOps pipelines, and whether I can actually follow my own advice.
           </p>
-          <h3 class="font-bold text-gray-900 mb-2">Technical Highlights:</h3>
+          <h3 class="font-bold text-gray-900 mb-2">Key Features:</h3>
           <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
-            <li>GitOps workflow for content updates</li>
-            <li>Runtime markdown parsing with syntax highlighting</li>
-            <li>Responsive design with Tailwind CSS</li>
-            <li>Deployed on GKE Autopilot via Helm</li>
+            <li>GitOps content workflow—commit to main, watch it deploy</li>
+            <li>Vue 3 + TypeScript frontend paired with FastAPI backend</li>
+            <li>Prism.js syntax highlighting for all those code examples</li>
+            <li>Deployed on GKE Autopilot via Helm charts</li>
+            <li>Learning project exploring modern web + DevOps patterns</li>
+            <li>Open source because gatekeeping is boring</li>
           </ul>
+          <div class="mb-4">
+            <a
+              href="https://github.com/silverbeer/qualityplaybook.dev"
+              target="_blank"
+              class="text-primary-600 hover:text-primary-700 font-semibold"
+            >
+              View on GitHub →
+            </a>
+          </div>
+          <p class="text-gray-600 text-sm italic">
+            Actively being developed. Interested in learning more or contributing?
+            Contact me at <a href="mailto:silverbeer.io@gmail.com" class="text-primary-600 hover:text-primary-700">silverbeer.io@gmail.com</a>
+          </p>
         </div>
       </div>
     </div>

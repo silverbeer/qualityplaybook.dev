@@ -38,7 +38,7 @@
         <div>
           <h3 class="text-lg font-bold mb-4">Connect</h3>
           <p class="text-gray-400">
-            Follow my work on <a href="https://dev.missingtable.com" target="_blank" class="text-primary-400 hover:text-primary-300">dev.missingtable.com</a>
+            Follow my work on <a href="https://missingtable.com" target="_blank" class="text-primary-400 hover:text-primary-300">missingtable.com</a>
           </p>
         </div>
       </div>
