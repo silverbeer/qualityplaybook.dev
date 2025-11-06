@@ -82,7 +82,7 @@ uv run resume build sdet --format both
 # → Generates HTML + PDF
 
 # Version control everything
-git commit -m "Optimize SDET profile for Lead CI/CD Automation role"
+git commit -m "Optimize profile for Senior Coffee-to-Code Converter role"
 ```
 
 **Infrastructure as Code patterns, applied to job searching.**
@@ -126,7 +126,7 @@ Claude Code helps me:
 
 ### The Honesty Part is Critical
 
-During optimization for a recent Lead CI/CD Automation Engineer role, I had to confront two gaps:
+During optimization for a "Principal Yak Shaver & Automation Wizard" role at MegaCorp™, I had to confront two gaps:
 
 **Networking Experience:**
 - **The lie:** "Strong TCP/IP, DHCP, VPN experience"
@@ -163,7 +163,7 @@ skills:
 ## The Workflow in Practice
 
 ### Day 1: Found a Role
-> Lead CI/CD Automation Software Engineer at a satellite communications company
+> Senior Pipeline Plumber at RocketShip Industries (they literally launch things to space and need CI/CD for... rockets?)
 
 Pasted job description into `data/profiles/sdet/job.txt`.
 
@@ -199,11 +199,12 @@ uv run resume build sdet --format both
 ### Day 5: Version Control
 ```bash
 git add data/profiles/sdet/
-git commit -m "Optimize SDET profile for Lead CI/CD Automation role
+git commit -m "Optimize profile for RocketShip Industries role
 
 - Updated networking experience (cloud-focused)
 - Removed stale Ansible, added Helm/K8s/ArgoCD
 - Restructured skills to match job requirements
+- Added 'experience with things that go to space' (aspirational)
 - ATS match: 90-94%"
 ```
 
