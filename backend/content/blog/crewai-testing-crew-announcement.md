@@ -33,7 +33,7 @@ author: Tom Drake
 
 **SAN FRANCISCO, CA** - Missing Table, the innovative youth soccer league management platform, today announced the signing of an unprecedented 8-agent autonomous testing crew powered by CrewAI technology. The historic deal represents the first multi-LLM roster in sports technology quality assurance, combining elite talent from both Anthropic's Claude and OpenAI's GPT lineups.
 
-"This is a game-changer for sports tech quality," said Tom Drake, Lead SDET and General Manager of the Testing Division. "We've assembled the perfect squad - each agent brings unique strengths, and together they form an unstoppable quality assurance machine."
+"Quality is a team sport," said Tom Drake, Lead SDET and General Manager of the Testing Division. "This is a game-changer for sports tech quality. We've assembled the perfect squad - each agent brings unique strengths, and together they form an unstoppable quality assurance machine."
 
 ---
 
