@@ -1,6 +1,6 @@
 ---
 title: "🏆 PRESS RELEASE: Missing Table Signs Historic 8-Agent Testing Crew"
-date: 2025-01-07
+date: 2025-01-07T12:00:00Z
 tags: ["crewai", "ai-agents", "test-automation", "anthropic", "openai", "quality-engineering", "llm"]
 description: "Missing Table announces the signing of an unprecedented 8-agent autonomous testing crew powered by CrewAI technology. Multi-LLM roster combines Anthropic Claude and OpenAI GPT for cost-optimized quality assurance at $0.85 per run."
 author: Tom Drake
