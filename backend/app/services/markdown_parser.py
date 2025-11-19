@@ -37,10 +37,19 @@ class MarkdownParser:
         self.md.reset()
         html_content = self.md.convert(post.content)
 
+        # Normalize date to string for consistent output
+        date_value = post.get('date', datetime.now())
+        if isinstance(date_value, datetime):
+            date_str = date_value.isoformat()
+        elif hasattr(date_value, 'isoformat'):  # datetime.date
+            date_str = date_value.isoformat()
+        else:
+            date_str = str(date_value)
+
         return {
             "slug": slug,
             "title": post.get('title', 'Untitled'),
-            "date": post.get('date', datetime.now().isoformat()),
+            "date": date_str,
             "tags": post.get('tags', []),
             "excerpt": post.get('excerpt', ''),
             "author": post.get('author', 'Quality Playbook'),
@@ -61,16 +70,25 @@ class MarkdownParser:
             if tag and tag not in post.get('tags', []):
                 continue
 
+            # Normalize date to string for consistent comparison
+            date_value = post.get('date', datetime.now())
+            if isinstance(date_value, datetime):
+                date_str = date_value.isoformat()
+            elif hasattr(date_value, 'isoformat'):  # datetime.date
+                date_str = date_value.isoformat()
+            else:
+                date_str = str(date_value)
+
             posts.append({
                 "slug": slug,
                 "title": post.get('title', 'Untitled'),
-                "date": post.get('date', datetime.now().isoformat()),
+                "date": date_str,
                 "tags": post.get('tags', []),
                 "excerpt": post.get('excerpt', ''),
                 "author": post.get('author', 'Quality Playbook'),
             })
 
-        # Sort by date (most recent first)
+        # Sort by date (most recent first) - now all dates are strings in ISO format
         posts.sort(key=lambda x: x['date'], reverse=True)
 
         # Apply pagination
