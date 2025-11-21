@@ -54,6 +54,52 @@
         </div>
       </div>
 
+      <!-- myrunstreak.run -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-3">
+            <a href="https://github.com/silverbeer/myrunstreak.run" target="_blank" class="hover:text-primary-600 transition">
+              myrunstreak.run ↗
+            </a>
+          </h2>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">AWS Lambda</span>
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">Terraform</span>
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">OIDC</span>
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">GitHub Actions</span>
+          </div>
+          <p class="text-gray-700 mb-4">
+            A serverless running streak tracker that pulls data from Strava and serves it via a public API.
+            Built to scratch my own itch—tracking a 4,100+ day running streak—while learning AWS serverless
+            patterns and modern IaC practices. Powers the "Did I Run Today?" widget on this very site.
+          </p>
+          <h3 class="font-bold text-gray-900 mb-2">Key Features:</h3>
+          <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
+            <li>100% Infrastructure as Code with Terraform</li>
+            <li>Keyless deploys via OIDC GitHub Actions to AWS</li>
+            <li>Serverless API using AWS Lambda + API Gateway</li>
+            <li>Nerd-friendly <code class="text-sm bg-gray-100 px-1">stk</code> CLI for local development</li>
+            <li>Public JSON API for streak data consumption</li>
+            <li>Smashrun integration for automatic activity sync</li>
+          </ul>
+          <div class="flex gap-4 mb-3">
+            <a
+              href="https://github.com/silverbeer/myrunstreak.run"
+              target="_blank"
+              class="text-primary-600 hover:text-primary-700 font-semibold"
+            >
+              View on GitHub →
+            </a>
+          </div>
+          <p class="text-gray-600 text-sm italic">
+            Live in production. The streak must continue. Fellow streak runners should check out
+            <a href="https://smashrun.com" target="_blank" class="text-primary-600 hover:text-primary-700">Smashrun</a>—the
+            best running analytics platform out there.
+            <a href="https://smashrun.com/tom.drake/" target="_blank" class="text-primary-600 hover:text-primary-700">Follow my runs</a>.
+          </p>
+        </div>
+      </div>
+
       <!-- missingtable.com -->
       <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
         <div class="p-6">
@@ -198,6 +244,8 @@
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">Docker</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">Kubernetes</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">GCP</span>
+        <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">AWS</span>
+        <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">Terraform</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">PostgreSQL</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">Supabase</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">GitHub Actions</span>
