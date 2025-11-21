@@ -54,7 +54,7 @@
     <section class="bg-gray-100 dark:bg-gray-800 py-16">
       <div class="container-custom">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center mb-12">What You'll Find Here</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
             <div class="text-primary-600 dark:text-primary-400 text-4xl mb-4">🧪</div>
             <h3 class="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">Testing Strategies</h3>
@@ -76,6 +76,8 @@
               Case studies and experiences from building products like missingtable.com and match-scraper.
             </p>
           </div>
+          <!-- Running Streak Widget -->
+          <RunningStreak />
         </div>
       </div>
     </section>
@@ -87,6 +89,7 @@ import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useBlogStore } from '../stores/blog'
 import BlogCard from '../components/BlogCard.vue'
+import RunningStreak from '../components/RunningStreak.vue'
 
 const blogStore = useBlogStore()
 
