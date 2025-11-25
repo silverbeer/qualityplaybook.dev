@@ -77,6 +77,7 @@
           <span>Last run:</span>
           <span class="font-medium text-gray-900 dark:text-gray-100">
             {{ formatLastRunDate(streakData.last_run.date) }}
+            <span class="text-gray-500 dark:text-gray-400 font-normal">({{ formatDateShort(streakData.last_run.date) }})</span>
           </span>
         </div>
         <div class="flex justify-between mt-1">
@@ -206,6 +207,17 @@ const formatLastRunDate = (dateString: string): string => {
     return 'Yesterday'
   }
 
+  // Parse the date string as local date for display
+  const [year, month, day] = dateString.split('-').map(Number)
+  const date = new Date(year, month - 1, day)
+
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric'
+  })
+}
+
+const formatDateShort = (dateString: string): string => {
   // Parse the date string as local date for display
   const [year, month, day] = dateString.split('-').map(Number)
   const date = new Date(year, month - 1, day)
