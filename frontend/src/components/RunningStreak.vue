@@ -59,12 +59,12 @@
           🎉 {{ formatNumber(getDaysMilestone(streakData.streak.current_days)!) }} days!
         </div>
 
-        <div class="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">
+        <div v-if="streakData.streak.total_mi" class="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">
           {{ formatNumber(streakData.streak.total_mi) }} miles total
         </div>
         <!-- Miles Milestone Celebration -->
         <div
-          v-if="getMilesMilestone(streakData.streak.total_mi)"
+          v-if="streakData.streak.total_mi && getMilesMilestone(streakData.streak.total_mi)"
           class="text-xs font-semibold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded mt-1 inline-block"
         >
           🎉 {{ formatNumber(getMilesMilestone(streakData.streak.total_mi)!) }} miles!
@@ -131,7 +131,7 @@ interface StreakData {
   streak: {
     current_days: number
     started: string
-    total_mi: number
+    total_mi?: number
   }
   last_run: {
     date: string
