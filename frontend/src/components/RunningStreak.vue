@@ -43,13 +43,23 @@
         </span>
       </div>
 
-      <!-- Streak Count -->
+      <!-- Streak Count - Flip Clock Style -->
       <div class="mb-4">
-        <div class="text-4xl font-bold text-primary-600 dark:text-primary-400">
-          {{ formatNumber(streakData.streak.current_days) }}
+        <div class="flip-counter">
+          <div
+            v-for="(digit, index) in getDigits(streakData.streak.current_days)"
+            :key="index"
+            class="flip-digit"
+          >
+            <span class="digit-value">{{ digit }}</span>
+            <div class="digit-divider"></div>
+          </div>
         </div>
-        <div class="text-sm text-gray-600 dark:text-gray-400">
+        <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">
           day streak since {{ formatStartDate(streakData.streak.started) }}
+        </div>
+        <div v-if="streakData.streak.duration" class="text-sm text-gray-500 dark:text-gray-400">
+          {{ streakData.streak.duration }}
         </div>
         <!-- Days Milestone Celebration -->
         <div
@@ -132,6 +142,7 @@ interface StreakData {
   streak: {
     current_days: number
     started: string
+    duration?: string
     total_mi?: number
   }
   last_run: {
@@ -157,6 +168,10 @@ const error = ref(false)
 
 const formatNumber = (num: number): string => {
   return num.toLocaleString('en-US')
+}
+
+const getDigits = (num: number): string[] => {
+  return num.toString().split('')
 }
 
 // Check if a milestone was recently crossed (within the last value)
@@ -300,3 +315,49 @@ onMounted(() => {
   fetchStreakData()
 })
 </script>
+
+<style scoped>
+.flip-counter {
+  display: inline-flex;
+  gap: 3px;
+  padding: 6px;
+  background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+  border-radius: 8px;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.flip-digit {
+  position: relative;
+  width: 36px;
+  height: 52px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 49%, #0f0f0f 51%, #1a1a1a 100%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.digit-value {
+  font-family: 'Roboto Mono', 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1;
+}
+
+.digit-divider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+</style>
