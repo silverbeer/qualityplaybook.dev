@@ -7,7 +7,7 @@ description: "Finding a new job is a full-time job. So I built a CLI tool and Cl
 
 > "Friends don't let friends run manual processes."
 
-I'm on the job hunt. Again.
+I'm on the job hunt. Still.
 
 If you've been through this recently, you know: **finding a new job is a full-time job**. LinkedIn applications. Company portals. Recruiter emails. Confirmation emails from 47 different ATS systems. And then — because you're collecting unemployment — you need to document every single application for your weekly certification.
 
@@ -269,14 +269,17 @@ And honestly? Building this tool was more fun than filling out my 47th Workday a
 
 The code is open source: **[github.com/silverbeer/job-log](https://github.com/silverbeer/job-log)**
 
-If you're on the job hunt and want to automate your tracking:
+The [README](https://github.com/silverbeer/job-log#readme) has detailed setup instructions covering:
 
-1. **Clone the repo** — `git clone https://github.com/silverbeer/job-log`
-2. **Install Claude Code** — [claude.ai/claude-code](https://claude.ai/claude-code)
-3. **Set up Gmail MCP** — `uvx mcp-gmail` (requires OAuth setup)
-4. **Run the slash command** — `/scan-jobs --days 7`
+1. **Clone and install** — Uses `uv` for dependency management
+2. **Google Cloud setup** — Creating OAuth credentials for Gmail API access
+3. **Gmail MCP server** — Options for connecting Claude Code to your inbox
+4. **Claude Code configuration** — Wiring up the MCP server
+5. **Database location** — Optional iCloud/Dropbox sync for multi-device access
 
-Or fork it and make it your own. The concept matters more than my specific implementation.
+The setup takes about 15 minutes if you're familiar with Google Cloud Console, longer if you're not. But you only do it once.
+
+Fork it, adapt it, make it your own. The engineering mindset matters more than my specific implementation.
 
 ---
 
@@ -310,9 +313,9 @@ A few mantras I live by:
 
 ## What's Next
 
-I'm still job hunting. Still applying. Still getting rejected.
+I'm still job hunting. Still applying. Still building tools to make the process less painful.
 
-But at least I'm not spending 45 minutes a week copying data from Gmail.
+And at least I'm not spending 45 minutes a week copying data from Gmail.
 
 That time is better spent preparing for interviews, building portfolio projects, or writing blog posts about automating the job hunt.
 
