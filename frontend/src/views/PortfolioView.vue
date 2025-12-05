@@ -190,6 +190,60 @@
         </div>
       </div>
 
+      <!-- job-log -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+        <div class="p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-3">
+            <a href="https://github.com/silverbeer/job-log" target="_blank" class="hover:text-primary-600 transition">
+              job-log ↗
+            </a>
+          </h2>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">Python</span>
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">DuckDB</span>
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">Claude Code</span>
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-1 rounded">MCP</span>
+          </div>
+          <p class="text-gray-700 mb-4">
+            <strong>Origin Story:</strong> Finding a job is a full-time job. And unemployment wants receipts.
+            After the third week of manually copying job applications from Gmail into a spreadsheet, I built this instead.
+            Because friends don't let friends run manual processes.
+          </p>
+          <p class="text-gray-700 mb-4">
+            <strong>The Magic:</strong> A Claude Code slash command (<code class="text-sm bg-gray-100 px-1">/scan-jobs</code>)
+            that reads Gmail via MCP, parses application confirmation emails from LinkedIn, Workday, Greenhouse, etc.,
+            and automatically logs them to a local DuckDB database. 45 minutes of weekly busywork → 30 seconds.
+          </p>
+          <h3 class="font-bold text-gray-900 mb-2">Key Features:</h3>
+          <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
+            <li>CLI for tracking job applications with full history</li>
+            <li>DuckDB backend for fast, local, SQL-powered queries 🦆</li>
+            <li>Claude Code slash command for Gmail integration</li>
+            <li>Parses LinkedIn, Workday, Greenhouse, Lever email formats</li>
+            <li>Weekly reporting for unemployment certification</li>
+            <li>Zero cloud dependencies—your data stays local</li>
+          </ul>
+          <div class="flex gap-4 mb-3">
+            <a
+              href="https://github.com/silverbeer/job-log"
+              target="_blank"
+              class="text-primary-600 hover:text-primary-700 font-semibold"
+            >
+              View on GitHub →
+            </a>
+            <router-link
+              to="/blog/automating-the-job-hunt"
+              class="text-primary-600 hover:text-primary-700 font-semibold"
+            >
+              Read the Blog Post →
+            </router-link>
+          </div>
+          <p class="text-gray-600 text-sm italic">
+            Built during the job hunt. Powered by the engineering mindset that if you're doing something twice, you should script it the third time.
+          </p>
+        </div>
+      </div>
+
       <!-- Quality Playbook -->
       <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
         <div class="p-6">
@@ -247,8 +301,10 @@
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">AWS</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">Terraform</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">PostgreSQL</span>
+        <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">DuckDB</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">Supabase</span>
         <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">GitHub Actions</span>
+        <span class="bg-white px-4 py-2 rounded shadow text-gray-800 font-medium">Claude Code</span>
       </div>
     </div>
   </div>
