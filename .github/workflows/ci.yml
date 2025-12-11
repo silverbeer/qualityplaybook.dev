@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '20'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          uv sync
+
+      - name: Run Ruff (Python lint)
+        continue-on-error: true
+        run: |
+          cd backend
+          uv run ruff check . || true
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run frontend lint
+        continue-on-error: true
+        run: |
+          cd frontend
+          npm run lint || true
+
+  build-and-push:
+    needs: lint
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push backend
+        run: |
+          docker build -t ghcr.io/silverbeer/qualityplaybook-backend:${{ github.sha }} \
+            -t ghcr.io/silverbeer/qualityplaybook-backend:latest \
+            -f backend/Dockerfile backend/
+          docker push ghcr.io/silverbeer/qualityplaybook-backend:${{ github.sha }}
+          docker push ghcr.io/silverbeer/qualityplaybook-backend:latest
+
+      - name: Build and push frontend
+        run: |
+          docker build -t ghcr.io/silverbeer/qualityplaybook-frontend:${{ github.sha }} \
+            -t ghcr.io/silverbeer/qualityplaybook-frontend:latest \
+            -f frontend/Dockerfile frontend/
+          docker push ghcr.io/silverbeer/qualityplaybook-frontend:${{ github.sha }}
+          docker push ghcr.io/silverbeer/qualityplaybook-frontend:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install doctl (DigitalOcean CLI)
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - name: Get kubeconfig for DOKS Cluster
+        run: |
+          doctl kubernetes cluster config save missingtable-dev
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'latest'
+
+      - name: Deploy backend to Kubernetes
+        run: |
+          helm upgrade --install qualityplaybook-backend ./helm/backend \
+            --namespace qualityplaybook \
+            --set image.repository=ghcr.io/silverbeer/qualityplaybook-backend \
+            --set image.tag=${{ github.sha }} \
+            --set image.pullPolicy=Always \
+            --wait
+
+      - name: Deploy frontend to Kubernetes
+        run: |
+          helm upgrade --install qualityplaybook-frontend ./helm/frontend \
+            --namespace qualityplaybook \
+            --set image.repository=ghcr.io/silverbeer/qualityplaybook-frontend \
+            --set image.tag=${{ github.sha }} \
+            --set image.pullPolicy=Always \
+            --wait
+
+      - name: Deployment summary
+        run: |
+          echo "Deployment completed!"
+          echo "Backend: ghcr.io/silverbeer/qualityplaybook-backend:${{ github.sha }}"
+          echo "Frontend: ghcr.io/silverbeer/qualityplaybook-frontend:${{ github.sha }}"

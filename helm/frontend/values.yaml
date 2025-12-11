@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: gcr.io/missing-table/qualityplaybook-frontend
+  repository: ghcr.io/silverbeer/qualityplaybook-frontend
   tag: latest
   pullPolicy: Always
 
