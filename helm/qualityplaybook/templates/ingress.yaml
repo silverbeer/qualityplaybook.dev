@@ -1,18 +1,26 @@
+{{- if .Values.ingress.enabled }}
+# =============================================================================
+# INGRESS
+# =============================================================================
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: qualityplaybook-ingress
+  labels:
+    {{- include "qualityplaybook.labels" . | nindent 4 }}
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{ .Values.ingress.className }}
   tls:
   - hosts:
-    - qualityplaybook.dev
-    - www.qualityplaybook.dev
-    secretName: qualityplaybook-tls
+    {{- range .Values.ingress.hosts }}
+    - {{ . }}
+    {{- end }}
+    secretName: {{ .Values.ingress.tls.secretName }}
   rules:
-  - host: qualityplaybook.dev
+  {{- range .Values.ingress.hosts }}
+  - host: {{ . }}
     http:
       paths:
       - path: /api
@@ -29,20 +37,5 @@ spec:
             name: qualityplaybook-frontend
             port:
               number: 80
-  - host: www.qualityplaybook.dev
-    http:
-      paths:
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: qualityplaybook-backend
-            port:
-              number: 8000
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: qualityplaybook-frontend
-            port:
-              number: 80
+  {{- end }}
+{{- end }}
