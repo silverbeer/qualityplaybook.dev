@@ -6,8 +6,8 @@ frontend:
 
   image:
     repository: ghcr.io/silverbeer/qualityplaybook-frontend
-    tag: latest
-    pullPolicy: Always
+    tag: "latest" # frontend-tag
+    pullPolicy: IfNotPresent
 
   service:
     type: ClusterIP
@@ -44,8 +44,8 @@ backend:
 
   image:
     repository: ghcr.io/silverbeer/qualityplaybook-backend
-    tag: latest
-    pullPolicy: Always
+    tag: "latest" # backend-tag
+    pullPolicy: IfNotPresent
 
   service:
     type: ClusterIP

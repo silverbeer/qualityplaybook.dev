@@ -9,7 +9,7 @@ env:
   NODE_VERSION: '20'
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -75,61 +75,61 @@ jobs:
 
       - name: Build and push backend
         run: |
-          docker build -t ghcr.io/silverbeer/qualityplaybook-backend:${{ github.sha }} \
-            -t ghcr.io/silverbeer/qualityplaybook-backend:latest \
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          docker build -t ghcr.io/silverbeer/qualityplaybook-backend:${SHORT_SHA} \
             -f backend/Dockerfile backend/
-          docker push ghcr.io/silverbeer/qualityplaybook-backend:${{ github.sha }}
-          docker push ghcr.io/silverbeer/qualityplaybook-backend:latest
+          docker push ghcr.io/silverbeer/qualityplaybook-backend:${SHORT_SHA}
 
       - name: Build and push frontend
         run: |
-          docker build -t ghcr.io/silverbeer/qualityplaybook-frontend:${{ github.sha }} \
-            -t ghcr.io/silverbeer/qualityplaybook-frontend:latest \
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          docker build -t ghcr.io/silverbeer/qualityplaybook-frontend:${SHORT_SHA} \
             -f frontend/Dockerfile frontend/
-          docker push ghcr.io/silverbeer/qualityplaybook-frontend:${{ github.sha }}
-          docker push ghcr.io/silverbeer/qualityplaybook-frontend:latest
+          docker push ghcr.io/silverbeer/qualityplaybook-frontend:${SHORT_SHA}
 
-  deploy:
+  # GitOps: Update Helm values with new image tags
+  # ArgoCD watches the repo and syncs changes to DOKS
+  update-helm-values:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install doctl (DigitalOcean CLI)
-        uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          # Use PAT to bypass branch protection for automated commits
+          token: ${{ secrets.GH_PAT }}
+          ref: main
+          fetch-depth: 0
 
-      - name: Get kubeconfig for DOKS Cluster
+      - name: Pull latest changes
         run: |
-          doctl kubernetes cluster config save missingtable-dev
+          git pull origin main
 
-      - name: Install Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: 'latest'
-
-      - name: Deploy backend to Kubernetes
+      - name: Update image tags in values.yaml
         run: |
-          helm upgrade --install qualityplaybook-backend ./helm/backend \
-            --namespace qualityplaybook \
-            --set image.repository=ghcr.io/silverbeer/qualityplaybook-backend \
-            --set image.tag=${{ github.sha }} \
-            --set image.pullPolicy=Always \
-            --wait
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          VALUES_FILE="helm/qualityplaybook/values.yaml"
 
-      - name: Deploy frontend to Kubernetes
-        run: |
-          helm upgrade --install qualityplaybook-frontend ./helm/frontend \
-            --namespace qualityplaybook \
-            --set image.repository=ghcr.io/silverbeer/qualityplaybook-frontend \
-            --set image.tag=${{ github.sha }} \
-            --set image.pullPolicy=Always \
-            --wait
+          # Update frontend tag (line with # frontend-tag marker)
+          sed -i "s|tag: \".*\" # frontend-tag|tag: \"${SHORT_SHA}\" # frontend-tag|" $VALUES_FILE
 
-      - name: Deployment summary
+          # Update backend tag (line with # backend-tag marker)
+          sed -i "s|tag: \".*\" # backend-tag|tag: \"${SHORT_SHA}\" # backend-tag|" $VALUES_FILE
+
+          echo "Updated tags to ${SHORT_SHA}"
+          cat $VALUES_FILE
+
+      - name: Commit and push
         run: |
-          echo "Deployment completed!"
-          echo "Backend: ghcr.io/silverbeer/qualityplaybook-backend:${{ github.sha }}"
-          echo "Frontend: ghcr.io/silverbeer/qualityplaybook-frontend:${{ github.sha }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add helm/qualityplaybook/values.yaml
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+            git commit -m "chore: Update image tags to ${SHORT_SHA}
+
+          [skip ci]"
+            git push
+          fi
