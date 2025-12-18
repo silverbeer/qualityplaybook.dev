@@ -6,7 +6,7 @@ frontend:
 
   image:
     repository: ghcr.io/silverbeer/qualityplaybook-frontend
-    tag: "a71cd9c" # frontend-tag
+    tag: "7956e38" # frontend-tag
     pullPolicy: IfNotPresent
 
   service:
@@ -44,7 +44,7 @@ backend:
 
   image:
     repository: ghcr.io/silverbeer/qualityplaybook-backend
-    tag: "a71cd9c" # backend-tag
+    tag: "7956e38" # backend-tag
     pullPolicy: IfNotPresent
 
   service:
