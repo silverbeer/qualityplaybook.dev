@@ -290,6 +290,6 @@ That's the quality playbook approach: **learn by building real things**.
 
 ---
 
-Have questions about the setup? Want to build something similar? Check out the [source code](https://github.com/silverbeer/missing-table) or reach out via the [contact page](/contact).
+Have questions about the setup? Want to build something similar? Check out the [application source code](https://github.com/silverbeer/missing-table) and the [infrastructure bootstrap repo](https://github.com/silverbeer/missingtable-platform-bootstrap), or reach out via the [contact page](/contact).
 
-*The infrastructure code is in a private repo, but I'm happy to share specifics if you're building something similar.*
+*I believe in learning in public—all my repos are open source. Fork them, learn from them, improve on them.*
