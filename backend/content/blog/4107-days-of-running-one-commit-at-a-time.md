@@ -148,6 +148,61 @@ I'm working on [myrunstreak.com](https://myrunstreak.com) — a web dashboard fo
 
 But the CLI will always be the first-class citizen. Because some of us prefer our dopamine hits in monospace.
 
+## Update: "Did I Run Today?" Tile
+
+I couldn't resist. You can now see my streak status in real-time right here on [qualityplaybook.dev](/).
+
+Look for the **"Did I Run Today?"** tile on the homepage. It shows:
+- Whether I've logged a run today (spoiler: yes)
+- My current streak count
+- Live data pulled from my running API
+
+### The Serverless Stack
+
+This was a fun excuse to build more AWS infrastructure:
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│  EventBridge    │────▶│  Lambda          │────▶│  S3 Bucket      │
+│  (scheduled)    │     │  (Python 3.12)   │     │  (static JSON)  │
+└─────────────────┘     └──────────────────┘     └────────┬────────┘
+     ↑ twice daily             │                          │
+     │ (9am + 12pm EST)        │ fetch from               │
+     │                         │ SmashRun API             ▼
+     │                         │                 ┌─────────────────┐
+     │                         ▼                 │  CloudFront     │
+                        ┌──────────────┐        │  (CDN + cache)  │
+                        │ Check if     │        └─────────────────┘
+                        │ run logged   │                 │
+                        │ today        │                 ▼
+                        └──────────────┘        qualityplaybook.dev
+```
+
+**100% Infrastructure as Code** using OpenTofu:
+
+```hcl
+schedules = [
+  {
+    name        = "morning-sync"
+    expression  = "cron(0 14 * * ? *)"  # 9am EST
+    description = "Morning sync check"
+  },
+  {
+    name        = "midday-sync"
+    expression  = "cron(0 17 * * ? *)"  # 12pm EST
+    description = "Midday sync check"
+  }
+]
+```
+
+The Lambda checks SmashRun, writes a simple JSON to S3, and CloudFront serves it globally with caching. Total AWS cost? About **$0.50/month**.
+
+### Why Twice a Day?
+
+Morning run? Caught by the 9am sync. Afternoon run? Caught by noon. Most of my runs happen before lunch anyway, but the second sync is insurance.
+
+And yes, if I run at 11 PM (don't judge), the tile won't update until the next morning. I can live with that—the streak still counts.
+
 ## The Streak Continues
 
 4,107 days. That's:
