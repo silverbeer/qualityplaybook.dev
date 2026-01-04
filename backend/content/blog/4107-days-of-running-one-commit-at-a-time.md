@@ -1,18 +1,20 @@
 ---
 title: "4,107 Days of Running: One Commit at a Time"
-date: 2025-11-20
-tags: [Running, CLI, Side Projects, Automation]
+date: 2026-01-04
+tags: [Running, CLI, Side Projects, Automation, AWS, Serverless]
 excerpt: "I've run every single day for over 11 years. Here's how I built a CLI to track my obsession, because Strava is for people who touch grass voluntarily."
 author: Quality Playbook
 ---
 
 # 4,107 Days of Running: One Commit at a Time
 
+> **🆕 January 2026 Update:** I added a "Did I Run Today?" tile to qualityplaybook.dev! [Jump to the update](#update-did-i-run-today-tile) to see the serverless architecture behind it.
+
 Let me tell you about my longest-running production system.
 
 No, not a Kubernetes cluster. Not a CI/CD pipeline. Not even that one cron job everyone's afraid to touch.
 
-I'm talking about my **running streak**: 4,107 consecutive days of running. That's every single day since August 24, 2014. Through blizzards. Through 100°F heat. Through that time I had food poisoning in Mexico City (0/10, would not recommend).
+I'm talking about my **running streak**: 4,107 consecutive days of running. That's every single day since August 24, 2014. Through blizzards. Through 100°F heat. Through that time I had one too many cervezas in Riviera Maya (would recommend, actually).
 
 ## The Problem
 
@@ -150,11 +152,17 @@ But the CLI will always be the first-class citizen. Because some of us prefer ou
 
 ## Update: "Did I Run Today?" Tile
 
+*45 days later, 45 more runs. The streak is now at **4,152 days**.*
+
 I couldn't resist. You can now see my streak status in real-time right here on [qualityplaybook.dev](/).
+
+![Did I Run Today? tile showing 4,152 day streak](/media/blog/did-i-run-today-tile.png)
 
 Look for the **"Did I Run Today?"** tile on the homepage. It shows:
 - Whether I've logged a run today (spoiler: yes)
-- My current streak count
+- My current streak count (4,152 and counting)
+- Today's run stats (distance, duration)
+- Monthly and yearly totals
 - Live data pulled from my running API
 
 ### The Serverless Stack
