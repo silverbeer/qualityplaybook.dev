@@ -9,6 +9,7 @@ metadata:
     {{- include "qualityplaybook.backend.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.backend.replicaCount }}
+  revisionHistoryLimit: {{ .Values.backend.revisionHistoryLimit | default 3 }}
   selector:
     matchLabels:
       app: qualityplaybook-backend
