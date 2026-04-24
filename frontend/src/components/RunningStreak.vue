@@ -129,12 +129,94 @@
           </span>
         </div>
       </div>
+
+      <!-- Goals Progress -->
+      <div
+        v-if="streakData.goals && (streakData.goals.monthly || streakData.goals.yearly)"
+        class="border-t border-gray-200 dark:border-gray-600 pt-3 mt-3"
+      >
+        <div class="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
+          Goals
+        </div>
+
+        <!-- Monthly Goal -->
+        <div v-if="streakData.goals.monthly" class="mb-3">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">📅 {{ currentMonthName }}</span>
+            <span class="text-xs font-semibold text-gray-900 dark:text-gray-100 whitespace-nowrap">
+              {{ streakData.goals.monthly.progress_mi.toFixed(1) }} / {{ streakData.goals.monthly.goal_mi.toFixed(0) }} mi
+            </span>
+          </div>
+          <p
+            v-if="streakData.goals.monthly.text"
+            class="text-xs text-gray-500 dark:text-gray-400 italic mb-1.5 line-clamp-2"
+            :title="streakData.goals.monthly.text"
+          >
+            {{ streakData.goals.monthly.text }}
+          </p>
+          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 overflow-hidden">
+            <div
+              class="h-2 rounded-full transition-all duration-500"
+              :class="getProgressBarColor(streakData.goals.monthly.percent, monthlyPaceDelta)"
+              :style="{ width: Math.min(streakData.goals.monthly.percent, 100) + '%' }"
+            ></div>
+          </div>
+          <div class="flex justify-between items-center mt-1 text-xs">
+            <span class="text-gray-500 dark:text-gray-400">
+              {{ streakData.goals.monthly.percent.toFixed(1) }}%
+            </span>
+            <span :class="getPaceColor(monthlyPaceDelta)">
+              {{ formatPaceDelta(monthlyPaceDelta) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Yearly Goal -->
+        <div v-if="streakData.goals.yearly">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">🎯 {{ currentYear }}</span>
+            <span class="text-xs font-semibold text-gray-900 dark:text-gray-100 whitespace-nowrap">
+              {{ streakData.goals.yearly.progress_mi.toFixed(1) }} / {{ streakData.goals.yearly.goal_mi.toFixed(0) }} mi
+            </span>
+          </div>
+          <p
+            v-if="streakData.goals.yearly.text"
+            class="text-xs text-gray-500 dark:text-gray-400 italic mb-1.5 line-clamp-2"
+            :title="streakData.goals.yearly.text"
+          >
+            {{ streakData.goals.yearly.text }}
+          </p>
+          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 overflow-hidden">
+            <div
+              class="h-2 rounded-full transition-all duration-500"
+              :class="getProgressBarColor(streakData.goals.yearly.percent, yearlyPaceDelta)"
+              :style="{ width: Math.min(streakData.goals.yearly.percent, 100) + '%' }"
+            ></div>
+          </div>
+          <div class="flex justify-between items-center mt-1 text-xs">
+            <span class="text-gray-500 dark:text-gray-400">
+              {{ streakData.goals.yearly.percent.toFixed(1) }}%
+            </span>
+            <span :class="getPaceColor(yearlyPaceDelta)">
+              {{ formatPaceDelta(yearlyPaceDelta) }}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+
+interface GoalProgress {
+  goal_mi: number
+  progress_mi: number
+  percent: number
+  text?: string
+  fetched_at?: string
+}
 
 interface StreakData {
   updated_at: string
@@ -156,6 +238,10 @@ interface StreakData {
   }>
   month_total_mi: number
   year_total_mi: number
+  goals?: {
+    monthly?: GoalProgress
+    yearly?: GoalProgress
+  }
 }
 
 const CACHE_KEY = 'running_streak_data'
@@ -309,6 +395,66 @@ const fetchStreakData = async (): Promise<void> => {
   } finally {
     loading.value = false
   }
+}
+
+// Goal pace calculations — compare actual % against expected % based on
+// how far through the period we are (day_of_period / days_in_period).
+const now = new Date()
+const currentYear = now.getFullYear()
+const currentMonthName = now.toLocaleDateString('en-US', { month: 'long' })
+
+const dayOfYear = (d: Date): number => {
+  const start = new Date(d.getFullYear(), 0, 0)
+  const diff = d.getTime() - start.getTime()
+  return Math.floor(diff / 86400000)
+}
+
+const daysInYear = (year: number): number => {
+  return ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) ? 366 : 365
+}
+
+const expectedMonthlyPct = computed((): number => {
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
+  return (now.getDate() / daysInMonth) * 100
+})
+
+const expectedYearlyPct = computed((): number => {
+  return (dayOfYear(now) / daysInYear(now.getFullYear())) * 100
+})
+
+const monthlyPaceDelta = computed((): number | null => {
+  const pct = streakData.value?.goals?.monthly?.percent
+  return pct !== undefined ? pct - expectedMonthlyPct.value : null
+})
+
+const yearlyPaceDelta = computed((): number | null => {
+  const pct = streakData.value?.goals?.yearly?.percent
+  return pct !== undefined ? pct - expectedYearlyPct.value : null
+})
+
+const formatPaceDelta = (delta: number | null): string => {
+  if (delta === null) return ''
+  const abs = Math.abs(delta).toFixed(1)
+  if (delta >= 0.5) return `${abs}% ahead of pace`
+  if (delta <= -0.5) return `${abs}% behind pace`
+  return 'on pace'
+}
+
+const getPaceColor = (delta: number | null): string => {
+  if (delta === null) return 'text-gray-500 dark:text-gray-400'
+  if (delta >= 0.5) return 'text-green-600 dark:text-green-400 font-medium'
+  if (delta <= -5) return 'text-red-600 dark:text-red-400 font-medium'
+  if (delta <= -0.5) return 'text-amber-600 dark:text-amber-400 font-medium'
+  return 'text-gray-500 dark:text-gray-400'
+}
+
+const getProgressBarColor = (percent: number, delta: number | null): string => {
+  if (percent >= 100) return 'bg-green-500 dark:bg-green-400'
+  if (delta === null) return 'bg-blue-500 dark:bg-blue-400'
+  if (delta >= 0.5) return 'bg-green-500 dark:bg-green-400'
+  if (delta <= -5) return 'bg-red-500 dark:bg-red-400'
+  if (delta <= -0.5) return 'bg-amber-500 dark:bg-amber-400'
+  return 'bg-blue-500 dark:bg-blue-400'
 }
 
 onMounted(() => {
