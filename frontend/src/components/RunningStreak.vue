@@ -109,10 +109,10 @@
         <div class="flex justify-between items-center">
           <span>This month:</span>
           <span class="flex items-center gap-1">
-            <span :class="streakData.month_total_mi >= 100 ? 'text-green-600 dark:text-green-400 font-medium' : ''">
+            <span :class="monthGoalMet ? 'text-green-600 dark:text-green-400 font-medium' : ''">
               {{ streakData.month_total_mi.toFixed(1) }} mi
             </span>
-            <svg v-if="streakData.month_total_mi >= 100" class="w-3 h-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+            <svg v-if="monthGoalMet" class="w-3 h-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
             </svg>
           </span>
@@ -120,10 +120,10 @@
         <div class="flex justify-between items-center mt-1">
           <span>This year:</span>
           <span class="flex items-center gap-1">
-            <span :class="streakData.year_total_mi >= 1200 ? 'text-green-600 dark:text-green-400 font-medium' : ''">
+            <span :class="yearGoalMet ? 'text-green-600 dark:text-green-400 font-medium' : ''">
               {{ streakData.year_total_mi.toFixed(1) }} mi
             </span>
-            <svg v-if="streakData.year_total_mi >= 1200" class="w-3 h-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+            <svg v-if="yearGoalMet" class="w-3 h-3 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
             </svg>
           </span>
@@ -140,11 +140,11 @@
         </div>
 
         <!-- Monthly Goal -->
-        <div v-if="streakData.goals.monthly" class="mb-3">
+        <div v-if="streakData.goals.monthly && monthlyDisplay" class="mb-3">
           <div class="flex items-start justify-between gap-2 mb-1">
             <span class="text-xs font-medium text-gray-700 dark:text-gray-300">📅 {{ currentMonthName }}</span>
             <span class="text-xs font-semibold text-gray-900 dark:text-gray-100 whitespace-nowrap">
-              {{ streakData.goals.monthly.progress_mi.toFixed(1) }} / {{ streakData.goals.monthly.goal_mi.toFixed(0) }} mi
+              {{ monthlyDisplay.progress_mi.toFixed(1) }} / {{ monthlyDisplay.goal_mi.toFixed(0) }} mi
             </span>
           </div>
           <p
@@ -157,13 +157,13 @@
           <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 overflow-hidden">
             <div
               class="h-2 rounded-full transition-all duration-500"
-              :class="getProgressBarColor(streakData.goals.monthly.percent, monthlyPaceDelta)"
-              :style="{ width: Math.min(streakData.goals.monthly.percent, 100) + '%' }"
+              :class="getProgressBarColor(monthlyDisplay.percent, monthlyPaceDelta)"
+              :style="{ width: Math.min(monthlyDisplay.percent, 100) + '%' }"
             ></div>
           </div>
           <div class="flex justify-between items-center mt-1 text-xs">
             <span class="text-gray-500 dark:text-gray-400">
-              {{ streakData.goals.monthly.percent.toFixed(1) }}%
+              {{ monthlyDisplay.percent.toFixed(1) }}%
             </span>
             <span :class="getPaceColor(monthlyPaceDelta)">
               {{ formatPaceDelta(monthlyPaceDelta) }}
@@ -172,11 +172,11 @@
         </div>
 
         <!-- Yearly Goal -->
-        <div v-if="streakData.goals.yearly">
+        <div v-if="streakData.goals.yearly && yearlyDisplay">
           <div class="flex items-start justify-between gap-2 mb-1">
             <span class="text-xs font-medium text-gray-700 dark:text-gray-300">🎯 {{ currentYear }}</span>
             <span class="text-xs font-semibold text-gray-900 dark:text-gray-100 whitespace-nowrap">
-              {{ streakData.goals.yearly.progress_mi.toFixed(1) }} / {{ streakData.goals.yearly.goal_mi.toFixed(0) }} mi
+              {{ yearlyDisplay.progress_mi.toFixed(1) }} / {{ yearlyDisplay.goal_mi.toFixed(0) }} mi
             </span>
           </div>
           <p
@@ -189,13 +189,13 @@
           <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 overflow-hidden">
             <div
               class="h-2 rounded-full transition-all duration-500"
-              :class="getProgressBarColor(streakData.goals.yearly.percent, yearlyPaceDelta)"
-              :style="{ width: Math.min(streakData.goals.yearly.percent, 100) + '%' }"
+              :class="getProgressBarColor(yearlyDisplay.percent, yearlyPaceDelta)"
+              :style="{ width: Math.min(yearlyDisplay.percent, 100) + '%' }"
             ></div>
           </div>
           <div class="flex justify-between items-center mt-1 text-xs">
             <span class="text-gray-500 dark:text-gray-400">
-              {{ streakData.goals.yearly.percent.toFixed(1) }}%
+              {{ yearlyDisplay.percent.toFixed(1) }}%
             </span>
             <span :class="getPaceColor(yearlyPaceDelta)">
               {{ formatPaceDelta(yearlyPaceDelta) }}
@@ -422,14 +422,48 @@ const expectedYearlyPct = computed((): number => {
   return (dayOfYear(now) / daysInYear(now.getFullYear())) * 100
 })
 
+// Upstream goals.*.progress_mi can lag behind the authoritative
+// month_total_mi / year_total_mi from the same payload. Prefer the totals and
+// recompute percent so the GOALS section stays in sync with the values shown
+// directly above it.
+const monthlyDisplay = computed((): GoalProgress | null => {
+  const g = streakData.value?.goals?.monthly
+  if (!g) return null
+  const progress_mi = streakData.value?.month_total_mi ?? g.progress_mi
+  const percent = g.goal_mi > 0 ? (progress_mi / g.goal_mi) * 100 : 0
+  return { ...g, progress_mi, percent }
+})
+
+const yearlyDisplay = computed((): GoalProgress | null => {
+  const g = streakData.value?.goals?.yearly
+  if (!g) return null
+  const progress_mi = streakData.value?.year_total_mi ?? g.progress_mi
+  const percent = g.goal_mi > 0 ? (progress_mi / g.goal_mi) * 100 : 0
+  return { ...g, progress_mi, percent }
+})
+
 const monthlyPaceDelta = computed((): number | null => {
-  const pct = streakData.value?.goals?.monthly?.percent
+  const pct = monthlyDisplay.value?.percent
   return pct !== undefined ? pct - expectedMonthlyPct.value : null
 })
 
 const yearlyPaceDelta = computed((): number | null => {
-  const pct = streakData.value?.goals?.yearly?.percent
+  const pct = yearlyDisplay.value?.percent
   return pct !== undefined ? pct - expectedYearlyPct.value : null
+})
+
+// Checkmark next to "This month" / "This year" totals fires only when the
+// active goal is met (falls back to legacy 100/1200 mi if no goal payload).
+const monthGoalMet = computed((): boolean => {
+  const total = streakData.value?.month_total_mi ?? 0
+  const goal = streakData.value?.goals?.monthly?.goal_mi ?? 100
+  return total >= goal
+})
+
+const yearGoalMet = computed((): boolean => {
+  const total = streakData.value?.year_total_mi ?? 0
+  const goal = streakData.value?.goals?.yearly?.goal_mi ?? 1200
+  return total >= goal
 })
 
 const formatPaceDelta = (delta: number | null): string => {
