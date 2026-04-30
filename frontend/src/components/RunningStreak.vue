@@ -142,14 +142,17 @@
         <!-- Monthly Goal -->
         <div v-if="streakData.goals.monthly && monthlyDisplay" class="mb-3">
           <div class="flex items-start justify-between gap-2 mb-1">
-            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">📅 {{ currentMonthName }}</span>
+            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">
+              📅 {{ currentMonthName }}
+              <span v-if="monthlyDisplay.percent >= 100" class="ml-1">🎉</span>
+            </span>
             <span class="text-xs font-semibold text-gray-900 dark:text-gray-100 whitespace-nowrap">
               {{ monthlyDisplay.progress_mi.toFixed(1) }} / {{ monthlyDisplay.goal_mi.toFixed(0) }} mi
             </span>
           </div>
           <p
             v-if="streakData.goals.monthly.text"
-            class="text-xs text-gray-500 dark:text-gray-400 italic mb-1.5 line-clamp-2"
+            class="text-xs text-gray-500 dark:text-gray-400 italic mb-1.5 line-clamp-3"
             :title="streakData.goals.monthly.text"
           >
             {{ streakData.goals.monthly.text }}
@@ -165,8 +168,11 @@
             <span class="text-gray-500 dark:text-gray-400">
               {{ monthlyDisplay.percent.toFixed(1) }}%
             </span>
-            <span :class="getPaceColor(monthlyPaceDelta)">
-              {{ formatPaceDelta(monthlyPaceDelta) }}
+            <span v-if="monthlyDisplay.percent >= 100" class="text-green-600 dark:text-green-400 font-medium">
+              🎉 Goal achieved!
+            </span>
+            <span v-else :class="getPaceColor(monthlyPaceDelta)">
+              {{ formatMilesDelta(monthlyMilesDelta) }}
             </span>
           </div>
         </div>
@@ -174,14 +180,17 @@
         <!-- Yearly Goal -->
         <div v-if="streakData.goals.yearly && yearlyDisplay">
           <div class="flex items-start justify-between gap-2 mb-1">
-            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">🎯 {{ currentYear }}</span>
+            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">
+              🎯 {{ currentYear }}
+              <span v-if="yearlyDisplay.percent >= 100" class="ml-1">🎉</span>
+            </span>
             <span class="text-xs font-semibold text-gray-900 dark:text-gray-100 whitespace-nowrap">
               {{ yearlyDisplay.progress_mi.toFixed(1) }} / {{ yearlyDisplay.goal_mi.toFixed(0) }} mi
             </span>
           </div>
           <p
             v-if="streakData.goals.yearly.text"
-            class="text-xs text-gray-500 dark:text-gray-400 italic mb-1.5 line-clamp-2"
+            class="text-xs text-gray-500 dark:text-gray-400 italic mb-1.5 line-clamp-3"
             :title="streakData.goals.yearly.text"
           >
             {{ streakData.goals.yearly.text }}
@@ -197,8 +206,11 @@
             <span class="text-gray-500 dark:text-gray-400">
               {{ yearlyDisplay.percent.toFixed(1) }}%
             </span>
-            <span :class="getPaceColor(yearlyPaceDelta)">
-              {{ formatPaceDelta(yearlyPaceDelta) }}
+            <span v-if="yearlyDisplay.percent >= 100" class="text-green-600 dark:text-green-400 font-medium">
+              🎉 Goal achieved!
+            </span>
+            <span v-else :class="getPaceColor(yearlyPaceDelta)">
+              {{ formatMilesDelta(yearlyMilesDelta) }}
             </span>
           </div>
         </div>
@@ -466,11 +478,25 @@ const yearGoalMet = computed((): boolean => {
   return total >= goal
 })
 
-const formatPaceDelta = (delta: number | null): string => {
-  if (delta === null) return ''
-  const abs = Math.abs(delta).toFixed(1)
-  if (delta >= 0.5) return `${abs}% ahead of pace`
-  if (delta <= -0.5) return `${abs}% behind pace`
+const monthlyMilesDelta = computed((): number | null => {
+  const delta = monthlyPaceDelta.value
+  const goal = monthlyDisplay.value?.goal_mi
+  if (delta === null || goal === undefined) return null
+  return (delta / 100) * goal
+})
+
+const yearlyMilesDelta = computed((): number | null => {
+  const delta = yearlyPaceDelta.value
+  const goal = yearlyDisplay.value?.goal_mi
+  if (delta === null || goal === undefined) return null
+  return (delta / 100) * goal
+})
+
+const formatMilesDelta = (milesDelta: number | null): string => {
+  if (milesDelta === null) return ''
+  const abs = Math.abs(milesDelta).toFixed(1)
+  if (milesDelta >= 0.1) return `${abs} mi ahead of pace`
+  if (milesDelta <= -0.1) return `${abs} mi behind pace`
   return 'on pace'
 }
 
